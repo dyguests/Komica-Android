@@ -26,6 +26,11 @@
             android:label="@string/title_activity_section"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+        <activity
+            android:name=".ui.TopicActivity"
+            android:label="@string/title_activity_topic"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>

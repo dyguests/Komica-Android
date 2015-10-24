@@ -1,8 +1,10 @@
 package com.fanhl.komica.api;
 
+import com.fanhl.komica.common.C;
 import com.fanhl.komica.common.U;
-import com.fanhl.komica.model.BBSMenuItem;
+import com.fanhl.komica.dummy.HomeDummy;
 import com.fanhl.komica.model.BBSMenuCategory;
+import com.fanhl.komica.model.BBSMenuItem;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,6 +19,10 @@ import java.util.List;
  */
 public class HomeApi {
     public static List<BBSMenuCategory> getBBSMenu() {
+        if (C.DUMMY) {
+            return HomeDummy.getBBSMenu();
+        }
+
         Document document = null;
         try {
             document = Jsoup.connect(U.KOMICA_HOME_MENU).timeout(30000).get();

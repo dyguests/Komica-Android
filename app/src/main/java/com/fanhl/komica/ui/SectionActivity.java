@@ -5,17 +5,24 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.fanhl.komica.GsonUtil;
 import com.fanhl.komica.R;
+import com.fanhl.komica.adapter.TopicAdapter;
 import com.fanhl.komica.api.SectionApi;
 import com.fanhl.komica.model.BBSMenuItem;
 import com.fanhl.komica.model.Section;
+import com.fanhl.komica.model.Topic;
 import com.fanhl.komica.ui.common.BaseActivity;
+import com.fanhl.util.GsonUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,21 +34,29 @@ import rx.android.schedulers.HandlerScheduler;
 public class SectionActivity extends BaseActivity {
     public static final String TAG = SectionActivity.class.getSimpleName();
 
-    public static final String EXTRA_BBSMENU = "EXTRA_BBSMENU";
+    public static final String EXTRA_BBS_MENU = "EXTRA_BBS_MENU";
 
     @Bind(R.id.toolbar)
     Toolbar              toolbar;
     @Bind(R.id.fab)
     FloatingActionButton fab;
+    @Bind(R.id.recyclerView)
+    RecyclerView         topicRecyclerView;
 
     private MenuItem refreshMenuItem;
 
+    /**
+     * 输入数据(根据此数据加载内容)
+     */
     private BBSMenuItem bbsMenuItem;
+
+    private TopicAdapter topicAdapter;
+    private List<Topic>  topics;
 
     public static void launch(Activity activity, BBSMenuItem data) {
         Intent intent = new Intent(activity, SectionActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
-        intent.putExtra(EXTRA_BBSMENU, GsonUtil.json(data));
+        intent.putExtra(EXTRA_BBS_MENU, GsonUtil.json(data));
         activity.startActivity(intent);
     }
 
@@ -53,13 +68,13 @@ public class SectionActivity extends BaseActivity {
         setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
-        bbsMenuItem = GsonUtil.obj(intent.getStringExtra(EXTRA_BBSMENU), BBSMenuItem.class);
+        bbsMenuItem = GsonUtil.obj(intent.getStringExtra(EXTRA_BBS_MENU), BBSMenuItem.class);
 
         if (bbsMenuItem != null) {
             setTitle(bbsMenuItem.getName());
         }
 
-        fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        fab.setOnClickListener(view -> Snackbar.make(view, "新建帖子失败(还没做呢!)", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show());
 
         //custom
@@ -70,7 +85,16 @@ public class SectionActivity extends BaseActivity {
     }
 
     private void assignViews() {
+        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        topicRecyclerView.setLayoutManager(mLayoutManager);
+        topicRecyclerView.setHasFixedSize(true);
 
+        topics = new ArrayList<>();
+        topicAdapter = new TopicAdapter(this, topics);
+        topicRecyclerView.setAdapter(topicAdapter);
+        topicAdapter.setOnItemClickListener((holder, position) -> {
+            TopicActivity.launch(SectionActivity.this, ((TopicAdapter.ViewHolder) holder).item);
+        });
     }
 
     private void refreshData() {
@@ -82,11 +106,11 @@ public class SectionActivity extends BaseActivity {
             }
         }).subscribeOn(HandlerScheduler.from(backgroundHandler))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(topics -> {
-                    if (topics != null) {
-//                        this.bbsSections.clear();
-//                        this.bbsSections.addAll(bbsSections);
-//                        bbsMenuAdapter.notifyDataSetChanged();
+                .subscribe(section -> {
+                    if (section != null && !section.getTopics().isEmpty()) {
+                        this.topics.clear();
+                        this.topics.addAll(section.getTopics());
+                        topicAdapter.notifyDataSetChanged();
                         Log.d(TAG, "加载topics成功");
                     } else {
                         Log.e(TAG, "加载topics失败");

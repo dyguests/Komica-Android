@@ -14,4 +14,16 @@ public class Topic {
         this.content = content;
         this.detailUrl = detailUrl;
     }
+
+    public String getTopicUrl() {
+        return topicUrl;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getDetailUrl() {
+        return detailUrl;
+    }
 }

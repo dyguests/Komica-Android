@@ -1,4 +1,4 @@
-package com.fanhl.komica.adapter;
+package com.fanhl.komica.adapter.common;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;

@@ -1,4 +1,4 @@
-package com.fanhl.komica;
+package com.fanhl.util;
 
 import android.util.Log;
 

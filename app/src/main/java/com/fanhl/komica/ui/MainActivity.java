@@ -70,8 +70,6 @@ public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
     }
 
     private void assignViews() {
-//        bbsMenuRecyclerView.pla
-
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
         bbsMenuRecyclerView.setLayoutManager(mLayoutManager);
         bbsMenuRecyclerView.setHasFixedSize(true);

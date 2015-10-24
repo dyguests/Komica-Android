@@ -9,8 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.fanhl.komica.R;
-import com.fanhl.komica.model.BBSMenuItem;
+import com.fanhl.komica.adapter.common.AbsRecyclerAdapter;
 import com.fanhl.komica.model.BBSMenuCategory;
+import com.fanhl.komica.model.BBSMenuItem;
 import com.fanhl.komica.util.ColorGenerator;
 
 import java.util.List;
@@ -26,12 +27,6 @@ public class BBSMenuAdapter extends AbsRecyclerAdapter<BBSMenuAdapter.ViewHolder
 
     private final Context               context;
     private final List<BBSMenuCategory> list;
-    @Bind(R.id.title)
-    TextView     mTitle;
-    @Bind(R.id.card_content)
-    LinearLayout mCardContent;
-    @Bind(R.id.card_view)
-    CardView     mCardView;
 
     private ColorGenerator mColorGenerator;
 

@@ -1,5 +1,7 @@
 package com.fanhl.komica.api;
 
+import com.fanhl.komica.common.C;
+import com.fanhl.komica.dummy.SectionDummy;
 import com.fanhl.komica.model.BBSMenuItem;
 import com.fanhl.komica.model.Section;
 import com.fanhl.komica.model.Topic;
@@ -22,6 +24,10 @@ public class SectionApi {
      * @return
      */
     public static Section getTopics(BBSMenuItem bbsMenuItem) {
+        if (C.DUMMY) {
+            return SectionDummy.getTopics(bbsMenuItem);
+        }
+
         Document document = null;
         try {
             document = Jsoup.connect(bbsMenuItem.getUrl()).timeout(30000).get();
@@ -40,11 +46,15 @@ public class SectionApi {
         Element  contentForm = document.select("form[action=index.php]").get(1);
         Elements elements    = contentForm.select("a[href^=index.php?res=]");//取得返信节点
         for (Element element : elements) {
-            String href = element.attr("href");
-            String imgUrl = leftAHrefImgUrl(element);
+            String relativeUrl = element.attr("href");
+            String imgSrc = leftAHrefImgUrl(element);
             String content = rightBlockquoteContent(element);
 
-            section.getTopics().add(new Topic(imgUrl, content, href));
+            String preUrl = section.getUrl();
+            int lastIndex = preUrl.lastIndexOf("/");
+            String url = preUrl.substring(0, lastIndex) + relativeUrl;
+
+            section.getTopics().add(new Topic(imgSrc, content, url));
         }
 
         return section;
@@ -60,13 +70,13 @@ public class SectionApi {
     private static String leftAHrefImgUrl(Element element) {
         int maxLeftTimes = 5;
 
-        Element prevElement;
+        Element prevElement = element;
         for (int i = 0; i < maxLeftTimes; i++) {
-            prevElement = element.previousElementSibling();
+            prevElement = prevElement.previousElementSibling();
             Elements imgElements = prevElement.select("img[src]");
             if (imgElements.size() > 0) {
                 Element imgElement = imgElements.get(0);
-                return imgElement.attr("href");
+                return imgElement.attr("src");
             }
         }
         return null;
@@ -81,9 +91,9 @@ public class SectionApi {
     private static String rightBlockquoteContent(Element element) {
         int maxRightTimes = 5;
 
-        Element nextElement;
+        Element nextElement = element;
         for (int i = 0; i < maxRightTimes; i++) {
-            nextElement = element.nextElementSibling();
+            nextElement = nextElement.nextElementSibling();
             Elements imgElements = nextElement.select("blockquote");
             if (imgElements.size() > 0) {
                 Element imgElement = imgElements.get(0);
