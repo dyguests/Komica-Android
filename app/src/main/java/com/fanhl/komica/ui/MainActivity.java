@@ -2,6 +2,7 @@ package com.fanhl.komica.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -27,6 +28,9 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.android.schedulers.HandlerScheduler;
 
+/**
+ * 首页,主菜单
+ */
 public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     public static final String TAG = MainActivity.class.getSimpleName();
@@ -40,7 +44,7 @@ public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
     @Bind(R.id.drawer_layout)
     DrawerLayout   drawer;
     @Bind(R.id.recyclerView)
-    RecyclerView   bbsMenuRecyclerView;
+    RecyclerView   mRecyclerView;
 
     private MenuItem refreshMenuItem;
 
@@ -71,12 +75,12 @@ public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
 
     private void assignViews() {
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL);
-        bbsMenuRecyclerView.setLayoutManager(mLayoutManager);
-        bbsMenuRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
 
         bbsSections = new ArrayList<>();
         bbsMenuAdapter = new BBSMenuAdapter(this, bbsSections);
-        bbsMenuRecyclerView.setAdapter(bbsMenuAdapter);
+        mRecyclerView.setAdapter(bbsMenuAdapter);
         bbsMenuAdapter.setOnItemClickListener((holder, position) -> {
             SectionActivity.launch(MainActivity.this, ((BBSMenuAdapter.ViewHolder) holder).item);
         });
@@ -102,6 +106,7 @@ public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
                         Log.d(TAG, "加载bbsMenu成功");
                     } else {
                         Log.e(TAG, "加载bbsMenu失败");
+                        Snackbar.make(mRecyclerView, "加载数据失败,请重试.", Snackbar.LENGTH_LONG).show();
                     }
                     refreshMenuItem.setEnabled(true);
                 }, Throwable::printStackTrace);

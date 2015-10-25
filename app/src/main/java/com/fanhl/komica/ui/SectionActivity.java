@@ -31,6 +31,9 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.android.schedulers.HandlerScheduler;
 
+/**
+ * 版块内容页面
+ */
 public class SectionActivity extends BaseActivity {
     public static final String TAG = SectionActivity.class.getSimpleName();
 
@@ -41,7 +44,7 @@ public class SectionActivity extends BaseActivity {
     @Bind(R.id.fab)
     FloatingActionButton fab;
     @Bind(R.id.recyclerView)
-    RecyclerView         topicRecyclerView;
+    RecyclerView         mRecyclerView;
 
     private MenuItem refreshMenuItem;
 
@@ -86,14 +89,14 @@ public class SectionActivity extends BaseActivity {
 
     private void assignViews() {
         StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        topicRecyclerView.setLayoutManager(mLayoutManager);
-        topicRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
 
         topics = new ArrayList<>();
         topicAdapter = new TopicAdapter(this, topics);
-        topicRecyclerView.setAdapter(topicAdapter);
+        mRecyclerView.setAdapter(topicAdapter);
         topicAdapter.setOnItemClickListener((holder, position) -> {
-            TopicActivity.launch(SectionActivity.this, ((TopicAdapter.ViewHolder) holder).item);
+            PostActivity.launch(SectionActivity.this, ((TopicAdapter.ViewHolder) holder).item);
         });
     }
 
@@ -114,6 +117,7 @@ public class SectionActivity extends BaseActivity {
                         Log.d(TAG, "加载topics成功");
                     } else {
                         Log.e(TAG, "加载topics失败");
+                        Snackbar.make(mRecyclerView, "加载数据失败,请重试.", Snackbar.LENGTH_LONG).show();
                     }
                     refreshMenuItem.setEnabled(true);
                 }, Throwable::printStackTrace);

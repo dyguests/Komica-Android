@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             android:minHeight="160dp"
-             android:minWidth="100dp"
-             android:orientation="vertical">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:minWidth="100dp"
+              android:orientation="vertical">
 
     <!--之后改成SquaredImageView,话说SquaredImageView是个啥啊-->
     <ImageView
         android:id="@+id/imageView"
-        android:src="@drawable/place_holder_img"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:minHeight="160dp"/>
 
     <android.support.v7.widget.AppCompatTextView
         android:id="@+id/content"
@@ -20,8 +19,8 @@
         android:layout_gravity="center_horizontal|bottom"
         android:background="@color/topic_card_content_background"
         android:ellipsize="end"
-        android:maxLines="2"
         android:padding="5dp"
+        android:singleLine="false"
         android:text="New Text"
         android:textColor="@android:color/white"/>
-</FrameLayout>
+</LinearLayout>

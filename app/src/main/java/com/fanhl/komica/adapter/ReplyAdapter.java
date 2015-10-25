@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.fanhl.komica.R;
 import com.fanhl.komica.adapter.common.AbsRecyclerAdapter;
-import com.fanhl.komica.model.Topic;
+import com.fanhl.komica.model.Reply;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -21,27 +21,27 @@ import butterknife.ButterKnife;
 /**
  * Created by fanhl on 15/10/24.
  */
-public class TopicAdapter extends AbsRecyclerAdapter<TopicAdapter.ViewHolder> {
-    public static final String TAG = TopicAdapter.class.getSimpleName();
+public class ReplyAdapter extends AbsRecyclerAdapter<ReplyAdapter.ViewHolder> {
+    public static final String TAG = ReplyAdapter.class.getSimpleName();
 
     private final Context     context;
-    private final List<Topic> list;
+    private final List<Reply> list;
 
-    public TopicAdapter(Context context, List<Topic> list) {
+    public ReplyAdapter(Context context, List<Reply> list) {
         this.context = context;
         this.list = list;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_topic_card, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.list_item_reply_card, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         super.onBindViewHolder(holder, position);
-        Topic item = list.get(position);
+        Reply item = list.get(position);
         holder.bind(context, item);
     }
 
@@ -58,13 +58,18 @@ public class TopicAdapter extends AbsRecyclerAdapter<TopicAdapter.ViewHolder> {
      */
     public class ViewHolder extends AbsRecyclerAdapter.ClickableViewHolder {
         @Bind(R.id.card_view)
-        CardView          mCardView;
+        CardView mCardView;
         @Bind(R.id.imageView)
-        ImageView         mImageView;
+        public ImageView mImageView;
         @Bind(R.id.content)
         AppCompatTextView mContent;
 
-        public Topic item;
+        public Reply item;
+
+        /**
+         * 当前是否显示的是详细图片(否则为缩略图)
+         */
+        public boolean isImageDetail = false;
 
         ViewHolder(View view) {
             super(view);
@@ -72,12 +77,16 @@ public class TopicAdapter extends AbsRecyclerAdapter<TopicAdapter.ViewHolder> {
             view.setTag(this);
         }
 
-        private void bind(Context context, Topic item) {
-            Picasso.with(context)
-                    .load(item.getImgUrl())
-                    .placeholder(R.drawable.place_holder_img)
-                    .fit()
-                    .into(mImageView);
+        private void bind(Context context, Reply item) {
+            if (item.getImgUrl() != null) {
+                Picasso.with(context)
+                        .load(item.getImgUrl())
+                        .placeholder(R.drawable.place_holder_img)
+                        .fit()
+                        .into(mImageView);
+            } else {
+                mImageView.setVisibility(View.GONE);
+            }
             mContent.setText(item.getContent());
 
             this.item = item;

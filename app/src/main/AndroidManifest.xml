@@ -27,9 +27,15 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
-            android:name=".ui.TopicActivity"
+            android:name=".ui.PostActivity"
             android:label="@string/title_activity_topic"
             android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+            android:name=".ui.GalleryActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_gallery"
+            android:theme="@style/FullscreenTheme">
         </activity>
     </application>
 
