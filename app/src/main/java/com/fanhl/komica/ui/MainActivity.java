@@ -106,7 +106,7 @@ public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
                         Log.d(TAG, "加载bbsMenu成功");
                     } else {
                         Log.e(TAG, "加载bbsMenu失败");
-                        Snackbar.make(mRecyclerView, "加载数据失败,请重试.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mRecyclerView, R.string.load_data_fail, Snackbar.LENGTH_LONG).show();
                     }
                     refreshMenuItem.setEnabled(true);
                 }, Throwable::printStackTrace);

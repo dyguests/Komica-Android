@@ -4,12 +4,38 @@
       tools:context=".ui.SectionActivity">
 
     <!--上一页-->
-
-   <item
-        android:id="@+id/action_refresh"
-        android:orderInCategory="100"
+    <item
+        android:id="@+id/action_previous"
+        android:icon="@drawable/fa_arrow_left"
         android:title="@string/action_refresh"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction"/>
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/fa_refresh"
+        android:title="@string/action_refresh"
+        app:showAsAction="always"/>
 
     <!--下一页-->
+    <item
+        android:id="@+id/action_next"
+        android:icon="@drawable/fa_arrow_right"
+        android:title="@string/action_next"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/action_page"
+        android:icon="@drawable/fa_align_justify"
+        android:title="@string/action_page"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/page_0"
+                android:icon="@drawable/fa_caret_right"
+                android:title="@string/page_0"/>
+            <item
+                android:id="@+id/page_1"
+                android:title="@string/page_1"/>
+        </menu>
+    </item>
 </menu>

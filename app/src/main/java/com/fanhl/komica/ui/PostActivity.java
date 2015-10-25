@@ -108,6 +108,7 @@ public class PostActivity extends BaseActivity {
             } else {
                 Picasso.with(PostActivity.this)
                         .load(viewHolder.item.getImgDetailUrl())
+                        .placeholder(viewHolder.mImageView.getDrawable())
                         .into(viewHolder.mImageView, new Callback() {
                             @Override
                             public void onSuccess() {

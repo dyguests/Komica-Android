@@ -5,11 +5,17 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="action_previous">上一页</string>
     <string name="action_refresh">刷新</string>
+    <string name="action_next">下一页</string>
+    <string name="action_page">页码</string>
+    <string name="page_0">第0页</string>
+    <string name="page_1">第1页</string>
+
     <string name="title_activity_section">版块</string>
     <string name="title_activity_topic">帖子</string>
 
-    <string name="title_activity_gallery">GalleryActivity</string>
+    <string name="title_activity_gallery">图片详细</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="load_img_detail_fail">加载详细图片失败,请重试.</string>

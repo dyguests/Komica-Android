@@ -52,6 +52,10 @@ public class SectionActivity extends BaseActivity {
      * 输入数据(根据此数据加载内容)
      */
     private BBSMenuItem bbsMenuItem;
+    /**
+     * 页码选择
+     */
+    private MenuItem    pageMenuItem;
 
     private TopicAdapter topicAdapter;
     private List<Topic>  topics;
@@ -117,7 +121,7 @@ public class SectionActivity extends BaseActivity {
                         Log.d(TAG, "加载topics成功");
                     } else {
                         Log.e(TAG, "加载topics失败");
-                        Snackbar.make(mRecyclerView, "加载数据失败,请重试.", Snackbar.LENGTH_LONG).show();
+                        Snackbar.make(mRecyclerView, R.string.load_data_fail, Snackbar.LENGTH_LONG).show();
                     }
                     refreshMenuItem.setEnabled(true);
                 }, Throwable::printStackTrace);
@@ -127,8 +131,10 @@ public class SectionActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.section, menu);
-        refreshMenuItem = menu.getItem(0);
+        refreshMenuItem = menu.findItem(R.id.action_refresh);
+        pageMenuItem = menu.findItem(R.id.action_page);
         refreshMenuItem.setEnabled(false);
+//        pageMenuItem.setEnabled(false);
         return true;
     }
 
