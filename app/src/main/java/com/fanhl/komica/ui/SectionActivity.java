@@ -105,12 +105,9 @@ public class SectionActivity extends BaseActivity {
     }
 
     private void refreshData() {
-        Observable.create(new Observable.OnSubscribe<Section>() {
-            @Override
-            public void call(Subscriber<? super Section> subscriber) {
-                subscriber.onNext(SectionApi.getTopics(bbsMenuItem));
-                subscriber.onCompleted();
-            }
+        Observable.<Section>create(subscriber -> {
+            subscriber.onNext(SectionApi.getTopics(bbsMenuItem));
+            subscriber.onCompleted();
         }).subscribeOn(HandlerScheduler.from(backgroundHandler))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(section -> {

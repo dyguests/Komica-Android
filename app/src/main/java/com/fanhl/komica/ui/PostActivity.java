@@ -29,7 +29,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.android.schedulers.HandlerScheduler;
 
@@ -136,12 +135,9 @@ public class PostActivity extends BaseActivity {
     }
 
     private void refreshData() {
-        Observable.create(new Observable.OnSubscribe<Post>() {
-            @Override
-            public void call(Subscriber<? super Post> subscriber) {
-                subscriber.onNext(PostApi.getPost(topic));
-                subscriber.onCompleted();
-            }
+        Observable.<Post>create(subscriber -> {
+            subscriber.onNext(PostApi.getPost(topic));
+            subscriber.onCompleted();
         }).subscribeOn(HandlerScheduler.from(backgroundHandler))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(post -> {

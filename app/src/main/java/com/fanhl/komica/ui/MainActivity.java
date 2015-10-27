@@ -24,7 +24,6 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.android.schedulers.HandlerScheduler;
 
@@ -90,12 +89,9 @@ public class MainActivity extends com.fanhl.komica.ui.common.BaseActivity
      * 初始化菜单
      */
     private void refreshData() {
-        Observable.create(new Observable.OnSubscribe<List<BBSMenuCategory>>() {
-            @Override
-            public void call(Subscriber<? super List<BBSMenuCategory>> subscriber) {
-                subscriber.onNext(HomeApi.getBBSMenu());
-                subscriber.onCompleted();
-            }
+        Observable.<List<BBSMenuCategory>>create(subscriber -> {
+            subscriber.onNext(HomeApi.getBBSMenu());
+            subscriber.onCompleted();
         }).subscribeOn(HandlerScheduler.from(backgroundHandler))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(bbsSections -> {
